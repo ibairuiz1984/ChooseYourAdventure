@@ -1,8 +1,13 @@
-// JavaScript para la historia interactiva estilo chat
 const storyNodes = {
+    intro: {
+        title: "Introduce tu nombre",
+        description: "Antes de empezar, por favor introduce tu nombre:",
+        options: []
+    },
     start: {
         title: "Una llamada misteriosa",
-        description: "Una voz desconocida al otro lado del teléfono te dice: 'Ven a la mansión de los Evernight al otro lado de la ciudad. Hay algo que te pertenece'. La llamada se corta antes de que puedas responder. ¿Qué decides hacer?",
+        description: () => `${playerName}, un tranquilo día en tu hogar se interrumpe por el sonido del teléfono. Una voz desconocida te cita al otro lado de la ciudad. 
+        'Es urgente, no confíes en nadie', dice antes de colgar. ¿Qué decides hacer?`,
         options: [
             { text: "Aceptar y prepararme para salir", nextNode: "prepareToGo" },
             { text: "Ignorar la llamada", nextNode: "ignoreCall" }
@@ -10,96 +15,182 @@ const storyNodes = {
     },
     prepareToGo: {
         title: "Camino a la cita",
-        description: "Te preparas rápidamente y sales de casa. Mientras caminas por la acera, decides cómo llegar a la mansión. El tiempo es justo y necesitas tomar una decisión.",
+        description: "Te pones tu abrigo y sales al frío de la tarde. La ciudad parece más oscura de lo habitual. ¿Cómo decides llegar al lugar?",
         options: [
             { text: "Ir andando", nextNode: "arriveOnFoot" },
             { text: "Tomar el metro", nextNode: "arriveLateByMetro" }
         ]
     },
     ignoreCall: {
-        title: "La curiosidad te domina",
-        description: "Aunque al principio decides ignorar la llamada, una extraña inquietud se apodera de ti. Finalmente, sales rumbo a la mansión. ¿Cómo decides llegar?",
+        title: "Decisión ignorada",
+        description: () => `A pesar de tu intento de ignorar la llamada, una extraña sensación de inquietud comienza a invadirte. 
+        Finalmente, la curiosidad puede más y decides acudir. ¿Cómo te diriges al lugar?`,
         options: [
             { text: "Ir andando", nextNode: "arriveOnFoot" },
             { text: "Tomar el metro", nextNode: "arriveLateByMetro" }
         ]
     },
     arriveOnFoot: {
-        title: "Llegas justo a tiempo",
-        description: "Tras un largo trayecto andando, llegas a la mansión justo cuando el reloj marca las ocho. La puerta principal está entreabierta y un leve crujido te invita a entrar. Dentro, un hombre mayor con aspecto severo te recibe y te explica que eres el último heredero de los Evernight. Para reclamar tu herencia, debes pasar una noche en la mansión encantada.",
+        title: "Llegas a la cita a tiempo",
+        description: () => `${playerName} camina rápidamente por las calles vacías. A lo lejos, aparece una imponente mansión victoriana con luces titilantes en sus ventanas. 
+        La puerta está entreabierta y un sobre con tu nombre te espera en el umbral. Al abrirlo, descubres que un familiar lejano te ha dejado una herencia. 
+        Sin embargo, para reclamarla, debes pasar la noche en la mansión encantada.`,
         options: [
-            { text: "Aceptar el desafío", nextNode: "hauntedMansion" },
+            { text: "Aceptar el desafío", nextNode: "exploreMansion" },
             { text: "Rechazar y marcharme", nextNode: "end" }
         ]
     },
     arriveLateByMetro: {
-        title: "Llegas tarde",
-        description: "El metro se retrasa y llegas cuando la mansión está completamente a oscuras. La puerta está cerrada, pero encuentras una nota clavada en la puerta: 'Si estás aquí por la herencia, entra por la puerta trasera y demuéstrame que tienes el valor necesario'. Decides continuar.",
+        title: "Llegas tarde a la cita",
+        description: () => `El metro se retrasa, y ${playerName} llega al lugar cuando las luces de la mansión ya están apagadas. 
+        Una nota en la puerta explica que un familiar lejano ha dejado una herencia, pero el testamento solo será leído si pasas la noche en la mansión. 
+        Un ligero crujido sugiere que alguien te observa desde las sombras.`,
         options: [
-            { text: "Buscar otra entrada", nextNode: "hauntedMansion" },
+            { text: "Buscar otra entrada", nextNode: "exploreMansion" },
             { text: "Rechazar y marcharme", nextNode: "end" }
         ]
     },
-    hauntedMansion: {
-        title: "La noche en la mansión",
-        description: "Dentro de la mansión, las luces parpadean y escuchas susurros en las habitaciones vacías. Encuentras un diario que pertenece a un antiguo residente de la mansión, revelando secretos oscuros de la familia Evernight. Una sombra se mueve a lo lejos. ¿Tendrás el valor de continuar?",
+    exploreMansion: {
+        title: "Explorando la mansión",
+        description: () => `La mansión emite un aire inquietante. Los pisos crujen bajo los pasos de ${playerName} mientras explora. 
+        Ecos de voces susurrantes parecen venir de las paredes. En una sala, encuentras un diario con extrañas anotaciones.`,
         options: [
-            { text: "Explorar más profundamente", nextNode: "secretRoom" },
-            { text: "Esconderme en una habitación", nextNode: "end" }
+            { text: "Leer el diario", nextNode: "readDiary" },
+            { text: "Seguir explorando", nextNode: "keepExploring" }
         ]
     },
-    secretRoom: {
-        title: "La habitación secreta",
-        description: "Siguiendo las pistas del diario, encuentras una habitación oculta detrás de una estantería. Dentro hay un cofre antiguo que contiene no solo la prueba de tu herencia, sino también un objeto misterioso que parece tener un poder sobrenatural. La noche será larga, pero ahora entiendes que esta herencia es más de lo que esperabas...",
+    readDiary: {
+        title: "El diario perdido",
+        description: "El diario habla de secretos familiares oscuros y una maldición que recae sobre la herencia. Un escalofrío recorre tu espalda.",
         options: [
-            { text: "Continuar", nextNode: "end" }
+            { text: "Investigar más", nextNode: "hiddenRoom" },
+            { text: "Salir corriendo de la mansión", nextNode: "end" }
+        ]
+    },
+    keepExploring: {
+        title: "Un descubrimiento inquietante",
+        description: "Mientras exploras, encuentras una habitación secreta con símbolos extraños en las paredes. Algo o alguien quiere que descubras la verdad.",
+        options: [
+            { text: "Entrar a la habitación secreta", nextNode: "hiddenRoom" },
+            { text: "Ignorarla y seguir explorando", nextNode: "hauntedEvent" }
+        ]
+    },
+    hiddenRoom: {
+        title: "La habitación secreta",
+        description: () => `${playerName} entra en la habitación y siente una fuerza desconocida. Una voz le susurra al oído: 'La verdad está cerca'.`,
+        options: [
+            { text: "Continuar", nextNode: "hauntedEvent" }
+        ]
+    },
+    hauntedEvent: {
+        title: "La verdad se revela",
+        description: "Las luces parpadean y la temperatura baja drásticamente. Un espíritu aparece y te revela la maldición que envuelve la herencia.",
+        options: [
+            { text: "Enfrentar al espíritu", nextNode: "end" },
+            { text: "Intentar escapar", nextNode: "end" }
         ]
     },
     end: {
         title: "Fin de la historia",
-        description: "Gracias por jugar. Cada elección cuenta. ¿Quieres intentarlo de nuevo para explorar otros caminos?",
+        description: () => `Gracias por jugar, ${playerName}. La mansión guarda secretos que pueden ser descubiertos en otra visita. ¿Quieres intentarlo de nuevo?`,
         options: [
             { text: "Reiniciar", nextNode: "start" }
         ]
     }
 };
 
-
-let currentNode = "start";
+let currentNode = "intro";
+let chatHistory = [];
 
 function updateStory() {
     const chatContainer = document.getElementById("chat-container");
+    chatContainer.innerHTML = ""; // Limpiar opciones previas
+
+    chatHistory.forEach(({ title, description, isUser }) => {
+        const message = document.createElement("div");
+        message.classList.add("message", isUser ? "user-message" : "bot-message");
+        message.innerHTML = `<strong>${title}</strong><br>${description}`;
+        chatContainer.appendChild(message);
+    });
 
     const node = storyNodes[currentNode];
+    const botMessage = displayMessage(node.title, typeof node.description === 'function' ? node.description() : node.description);
+    chatHistory.push({ title: node.title, description: botMessage.innerHTML, isUser: false });
 
-    // Agregar la descripción actual al historial
-    const botMessage = document.createElement("div");
-    botMessage.classList.add("message", "bot-message");
-    botMessage.innerHTML = `<strong>${node.title}</strong><br>${node.description}`;
-    chatContainer.appendChild(botMessage);
+    const optionsContainer = createOptionsContainer();
 
-    // Agregar opciones como botones
-    const optionsContainer = document.createElement("div");
-    optionsContainer.classList.add("options-container");
-
-    node.options.forEach(option => {
-        const button = document.createElement("button");
-        button.textContent = option.text;
-        button.onclick = () => {
-            // Agregar la elección del usuario al historial
-            const userMessage = document.createElement("div");
-            userMessage.classList.add("message", "user-message");
-            userMessage.textContent = option.text;
-            chatContainer.appendChild(userMessage);
-
-            currentNode = option.nextNode;
-            updateStory();
-        };
-        optionsContainer.appendChild(button);
-    });
+    if (currentNode === "intro") {
+        createIntroOptions(optionsContainer);
+    } else {
+        createStoryOptions(node.options, optionsContainer);
+    }
 
     chatContainer.appendChild(optionsContainer);
     chatContainer.scrollTop = chatContainer.scrollHeight; // Desplazar hacia abajo automáticamente
+}
+
+function displayMessage(title, description) {
+    const chatContainer = document.getElementById("chat-container");
+    const botMessage = document.createElement("div");
+    botMessage.classList.add("message", "bot-message");
+    botMessage.innerHTML = `<strong>${title}</strong><br>${description}`;
+    chatContainer.appendChild(botMessage);
+    return botMessage;
+}
+
+function createOptionsContainer() {
+    const optionsContainer = document.createElement("div");
+    optionsContainer.classList.add("options-container");
+    return optionsContainer;
+}
+
+function createIntroOptions(optionsContainer) {
+    const inputField = document.createElement("input");
+    inputField.type = "text";
+    inputField.placeholder = "Escribe tu nombre";
+    inputField.classList.add("name-input");
+
+    inputField.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            acceptName(inputField);
+        }
+    });
+
+    const submitButton = document.createElement("button");
+    submitButton.textContent = "Comenzar";
+    submitButton.addEventListener('click', () => acceptName(inputField));
+
+    optionsContainer.appendChild(inputField);
+    optionsContainer.appendChild(submitButton);
+}
+
+function acceptName(inputField) {
+    playerName = inputField.value.charAt(0).toUpperCase() + inputField.value.slice(1).toLowerCase() || "Jugador";
+    chatHistory.push({ title: "Nombre introducido", description: playerName, isUser: true });
+    currentNode = "start";
+    updateStory();
+}
+
+function createStoryOptions(options, optionsContainer) {
+    options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option.text;
+        button.addEventListener('click', () => {
+            displayUserMessage(option.text);
+            chatHistory.push({ title: `${playerName} elige:`, description: option.text, isUser: true });
+            currentNode = option.nextNode;
+            updateStory();
+        });
+        optionsContainer.appendChild(button);
+    });
+}
+
+function displayUserMessage(message) {
+    const chatContainer = document.getElementById("chat-container");
+    const userMessage = document.createElement("div");
+    userMessage.classList.add("message", "user-message");
+    userMessage.textContent = message;
+    chatContainer.appendChild(userMessage);
 }
 
 document.addEventListener("DOMContentLoaded", updateStory);
