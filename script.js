@@ -109,7 +109,7 @@ function updateStory() {
     chatHistory.forEach(({ title, description, isUser }) => {
         const message = document.createElement("div");
         message.classList.add("message", isUser ? "user-message" : "bot-message");
-        message.innerHTML = `<strong>${title}</strong><br>${description}`;
+        message.innerHTML = description; // Cambia esta línea para no incluir el título de nuevo
         chatContainer.appendChild(message);
     });
 
@@ -137,6 +137,7 @@ function displayMessage(title, description) {
     chatContainer.appendChild(botMessage);
     return botMessage;
 }
+
 
 function createOptionsContainer() {
     const optionsContainer = document.createElement("div");
