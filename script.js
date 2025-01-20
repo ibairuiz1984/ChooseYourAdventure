@@ -149,7 +149,6 @@ const storyNodes = {
     }
 };
 
-
 let currentNode = "intro";
 let chatHistory = [];
 
@@ -157,16 +156,16 @@ function updateStory() {
     const chatContainer = document.getElementById("chat-container");
     chatContainer.innerHTML = ""; // Limpiar opciones previas
 
-    chatHistory.forEach(({ title, description, isUser }) => {
+    chatHistory.forEach(({ description, isUser }) => {
         const message = document.createElement("div");
         message.classList.add("message", isUser ? "user-message" : "bot-message");
-        message.innerHTML = description; // Cambia esta línea para no incluir el título de nuevo
+        message.innerHTML = description; // Solo se muestra la descripción
         chatContainer.appendChild(message);
     });
 
     const node = storyNodes[currentNode];
     const botMessage = displayMessage(node.title, typeof node.description === 'function' ? node.description() : node.description);
-    chatHistory.push({ title: node.title, description: botMessage.innerHTML, isUser: false });
+    chatHistory.push({ description: botMessage.innerHTML, isUser: false });
 
     const optionsContainer = createOptionsContainer();
 
@@ -188,7 +187,6 @@ function displayMessage(title, description) {
     chatContainer.appendChild(botMessage);
     return botMessage;
 }
-
 
 function createOptionsContainer() {
     const optionsContainer = document.createElement("div");
@@ -218,7 +216,7 @@ function createIntroOptions(optionsContainer) {
 
 function acceptName(inputField) {
     playerName = inputField.value.charAt(0).toUpperCase() + inputField.value.slice(1).toLowerCase() || "Jugador";
-    chatHistory.push({ title: "Nombre introducido", description: playerName, isUser: true });
+    chatHistory.push({ description: `${playerName} ha sido introducido como tu nombre.`, isUser: true });
     currentNode = "start";
     updateStory();
 }
@@ -229,7 +227,7 @@ function createStoryOptions(options, optionsContainer) {
         button.textContent = option.text;
         button.addEventListener('click', () => {
             displayUserMessage(option.text);
-            chatHistory.push({ title: `${playerName} elige:`, description: option.text, isUser: true });
+            chatHistory.push({ description: option.text, isUser: true });
             currentNode = option.nextNode;
             updateStory();
         });
